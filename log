@@ -1,0 +1,5 @@
+#!/bin/sh
+
+BASEDIR=$(dirname $0)
+cat $BASEDIR/logs/stat.log $BASEDIR/logs/stat.heartbeat
+
