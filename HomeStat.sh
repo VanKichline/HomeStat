@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 # HomeStat application - targets Omega2
 # Logs WLAN, INET, and A/C Power failures
 # and creates a web page to display the log.
