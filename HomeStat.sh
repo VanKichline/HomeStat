@@ -3,11 +3,14 @@
 # Logs WLAN, INET, and A/C Power failures
 # and creates a web page to display the log.
 
-INET_STATUS=-1
-WNET_STATUS=-1
 BASEDIR=$(dirname $0)
 LOG_FILE="$BASEDIR/logs/stat.log" 
 HEARTBEAT_FILE="$BASEDIR/logs/stat.heartbeat"
+
+WLAN_ADDRESS=`route -n | grep 'UG[ \t]' | awk '{print $2}'`
+INET_ADDRESS="8.8.8.8"
+INET_STATUS=-1
+WNET_STATUS=-1
 
 # Call with param = 0, 1 or 2; results of ping
 # Sets $STATUS_WORD
@@ -41,9 +44,9 @@ while [ 1 ]
 do
   Now
   echo "$NOW: Last Operation." > $HEARTBEAT_FILE
-  ping -q -c 1 192.168.1.1 &> /dev/null
+  ping -q -c 1 $WLAN_ADDRESS &> /dev/null
   WNET=$?
-  ping -q -c 1 8.8.8.8 &> /dev/null 
+  ping -q -c 1 $INET_ADDRESS &> /dev/null 
   INET=$?
 
   if [ $INET_STATUS != $INET ]; then
