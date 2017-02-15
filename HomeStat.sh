@@ -27,6 +27,8 @@ function StatusWord {
 # No parameters, sets $NOW
 function Now {
   NOW=`date -Iseconds`
+  NOW=${NOW:0:19}
+  NOW=${NOW/T/ }
 }
 
 # Pause to ensure date is valid
@@ -34,16 +36,16 @@ sleep 10
 Now
 if [ -e $HEARTBEAT_FILE ]; then
   cat $HEARTBEAT_FILE >> $LOG_FILE
-  echo "$NOW: $(basename $0) Restart" >> $LOG_FILE
+  echo "$NOW  $(basename $0) Restart" >> $LOG_FILE
 else
-  echo "$NOW: $(basename $0) Startup" >> $LOG_FILE
+  echo "$NOW  $(basename $0) Startup" >> $LOG_FILE
 fi
 
 # Loop forever
 while [ 1 ]
 do
   Now
-  echo "$NOW: Last Operation." > $HEARTBEAT_FILE
+  echo "$NOW  Last Operation." > $HEARTBEAT_FILE
   ping -q -c 1 $WLAN_ADDRESS &> /dev/null
   WNET=$?
   ping -q -c 1 $INET_ADDRESS &> /dev/null 
@@ -52,12 +54,12 @@ do
   if [ $INET_STATUS != $INET ]; then
     INET_STATUS=$INET
     StatusWord $INET
-    echo "$NOW: iNet status change: $STATUS_WORD" >> $LOG_FILE
+    echo "$NOW  INet status change: $STATUS_WORD" >> $LOG_FILE
   fi  
   if [ $WNET_STATUS != $WNET ]; then
     WNET_STATUS=$WNET
     StatusWord $WNET
-    echo "$NOW: Wifi status change: $STATUS_WORD" >> $LOG_FILE
+    echo "$NOW  Wifi status change: $STATUS_WORD" >> $LOG_FILE
   fi
   $BASEDIR/MakePage.sh
   sleep 30
