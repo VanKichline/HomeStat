@@ -9,6 +9,7 @@
 #  WEB_TEMPLATES   Directory containing page.top and page.bottom
 #  WEB_PAGE        Full path to regularly regenerated page
 #  INET_ADDRESS    IP address to ping for inet access test
+#  PING_COUNT      -c parameter for ping command
 source "$(dirname $0)/HomeStat.conf"
 # TODO: Handle errors opening config file   
 
@@ -59,9 +60,9 @@ while [ 1 ]
 do
   Now
   echo "$NOW  Last Operation." > $HEARTBEAT_FILE
-  ping -q -c 1 $WLAN_ADDRESS &> /dev/null
+  ping -q -c $PING_COUNT $WLAN_ADDRESS &> /dev/null
   WNET=$?
-  ping -q -c 1 $INET_ADDRESS &> /dev/null 
+  ping -q -c $PING_COUNT $INET_ADDRESS &> /dev/null 
   INET=$?
 
   if [ $INET_STATUS != $INET ]; then
