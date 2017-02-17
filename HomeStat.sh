@@ -13,7 +13,6 @@ source "$(dirname $0)/HomeStat.conf"
 # TODO: Handle errors opening config file   
 
 WLAN_ADDRESS=`route -n | grep 'UG[ \t]' | awk '{print $2}'`
-INET_ADDRESS="8.8.8.8"
 INET_STATUS=-1
 WNET_STATUS=-1
 
