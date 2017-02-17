@@ -10,12 +10,19 @@
 #  WEB_PAGE        Full path to regularly regenerated page
 #  INET_ADDRESS    IP address to ping for inet access test
 #  PING_COUNT      -c parameter for ping command
-source "$(dirname $0)/HomeStat.conf"
-# TODO: Handle errors opening config file   
+#  LOOP_DELAY      Delay for each loop
 
+SCRIPT_NAME=$(basename $0)
 WLAN_ADDRESS=`route -n | grep 'UG[ \t]' | awk '{print $2}'`
 INET_STATUS=-1
 WNET_STATUS=-1
+
+
+# Load the configuration file
+# Script will fail and return error if config file isn't found
+function Config {
+  source "$(dirname $0)/HomeStat.conf"
+}
 
 # Call with param = 0, 1 or 2; results of ping
 # Sets $STATUS_WORD
@@ -45,14 +52,19 @@ function MakeWebPage {
   cat $WEB_TEMPLATES/page.bottom >> $WEB_PAGE
 }
 
-# Pause to ensure date is valid
+
+# Load the configuration file
+Config
+
+# Pause to ensure date command is valid if started from rc.local
 sleep 10
+
 Now
 if [ -e $HEARTBEAT_FILE ]; then
   cat $HEARTBEAT_FILE >> $LOG_FILE
-  echo "$NOW  $(basename $0) Restart" >> $LOG_FILE
+  echo "$NOW  $SCRIPT_NAME Restart" >> $LOG_FILE
 else
-  echo "$NOW  $(basename $0) Startup" >> $LOG_FILE
+  echo "$NOW  $script_name Startup" >> $LOG_FILE
 fi
 
 # Loop forever
@@ -76,6 +88,6 @@ do
     echo "$NOW  Wifi status change: $STATUS_WORD" >> $LOG_FILE
   fi
   MakeWebPage
-  sleep 30
+  sleep $LOOP_DELAY
 done
 
