@@ -3,12 +3,14 @@
 # Logs WLAN, INET, and A/C Power failures
 # and creates a web page to display the log.
 
-BASEDIR=$(dirname $0)
-LOGDIR="$BASEDIR/logs"
-LOG_FILE="$LOGDIR/stat.log" 
-HEARTBEAT_FILE="$LOGDIR/stat.heartbeat"
-WEB_TEMPLATES="$BASEDIR/web"
-WEB_PAGE="/www/HomeStat.html"
+# HomeStat.conf contains definitions for:
+#  LOG_FILE        Full path to the output log
+#  HEARTBEAT_FILE  Full path to the heartbeat file
+#  WEB_TEMPLATES   Directory containing page.top and page.bottom
+#  WEB_PAGE        Full path to regularly regenerated page
+#  INET_ADDRESS    IP address to ping for inet access test
+source "$(dirname $0)/HomeStat.conf"
+# TODO: Handle errors opening config file   
 
 WLAN_ADDRESS=`route -n | grep 'UG[ \t]' | awk '{print $2}'`
 INET_ADDRESS="8.8.8.8"
