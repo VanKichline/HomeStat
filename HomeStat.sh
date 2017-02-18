@@ -64,7 +64,7 @@ if [ -e $HEARTBEAT_FILE ]; then
   cat $HEARTBEAT_FILE >> $LOG_FILE
   echo "$NOW  $SCRIPT_NAME Restart" >> $LOG_FILE
 else
-  echo "$NOW  $script_name Startup" >> $LOG_FILE
+  echo "$NOW  $SCRIPT_NAME Startup" >> $LOG_FILE
 fi
 
 # Loop forever
