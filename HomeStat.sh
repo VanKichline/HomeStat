@@ -22,6 +22,10 @@ WNET_STATUS=-1
 # Script will fail and return error if config file isn't found
 function Config {
   source "$(dirname $0)/HomeStat.conf"
+  LOG_DIR="$(dirname $LOG_FILE)"
+  if [ ! -d "$LOG_DIR" ]; then
+    mkdir $LOG_DIR
+  fi
 }
 
 # Call with param = 0, 1 or 2; results of ping
